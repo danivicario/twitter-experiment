@@ -54,7 +54,7 @@ const PI_HALF = Math.PI / 2;
 canvasDOMEl.setAttribute("height", window.innerHeight);
 canvasDOMEl.setAttribute("width", window.innerWidth);
 
-function makeMatrix(e, size, gap) {
+function makeMatrix(e, size, gap, xxx) {
   ctx.save();
   ctx.translate(w2 - (e * gap) / 2, h2 - (e * gap) / 2);
   const circles = [];
@@ -74,15 +74,20 @@ function makeMatrix(e, size, gap) {
     ctx.arc(
       x[0] + size,
       x[1] + size,
-      Math.abs(size * Math.tan(((idx / 45) * Math.PI) / 180)),
+      Math.abs(size * Math.sin(((idx / 45) * Math.PI) / 180)) * xxx,
       0,
       PI_DOUBLE
     );
-    ctx.fill();
-    // ctx.stroke();
+    // ctx.fill();
+    ctx.stroke();
     ctx.closePath();
   });
   ctx.restore();
 }
 
-makeMatrix(60, 10, 30);
+let xxx = 1;
+setInterval(() => {
+  xxx += 0.01;
+  ctx.clearRect(0, 0, w, h);
+  makeMatrix(60, 10, 30, xxx);
+}, 10);
