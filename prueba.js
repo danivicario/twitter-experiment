@@ -89,16 +89,18 @@ function getDataModel(e, size, gap) {
   return circles;
 }
 function makeMatrix(circles, size, xxx) {
+  let r;
+
   circles.forEach((x, idx) => {
     let fn;
 
     if (x.fType === 1) fn = Math.tan;
     if (x.fType === 2) fn = Math.cos;
-    if (x.fType === 3) fn = Math.cos;
+    if (x.fType === 3) fn = Math.sin;
 
     ctx.beginPath();
     ctx.fillStyle = `${x.color}`;
-    let r = Math.abs(size * fn((360 * Math.PI) / 180)) * xxx + randomFloat(0.1, 1.9);
+    r = Math.abs(size * fn((360 * Math.PI) / 180)) * xxx + randomFloat(0.1, 1.9);
     // r *= ;
     ctx.arc(x.row, x.col, r, 0, PI_DOUBLE);
     ctx.fill();
@@ -114,13 +116,14 @@ const size = 5;
 const gap = 20;
 const circles = getDataModel(e, size, gap, xxx);
 
-let intervalID = setInterval(() => {
+function draw() {
+  requestAnimationFrame(draw);
   ctx.clearRect(0, 0, w, h);
   ctx.save();
   ctx.translate(w2 - (e * gap) / 2, h2 - (e * gap) / 2);
   // xxx += 0.005;
   makeMatrix(circles, size, xxx);
   ctx.restore();
+}
 
-  if (xxx > 30) clearInterval(intervalID);
-}, 10);
+draw();
